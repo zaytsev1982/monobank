@@ -1,6 +1,6 @@
 package ua.com.monobank.service;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import ua.com.monobank.model.Journal;
 
@@ -12,5 +12,9 @@ public interface JournalService {
 
     Journal findByMnemonic(String mnemonic);
 
-    Journal getOne(Integer code, Date date);
+    Journal getOne(Integer code, LocalDate date);
+
+    Journal getCode(Integer code);
+
+    List<Journal> getByDate(LocalDate localDate);
 }

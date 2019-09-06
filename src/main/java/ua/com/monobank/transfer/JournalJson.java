@@ -16,6 +16,4 @@ public class JournalJson {
     private String buy;
     @JsonProperty(value = "rateSell")
     private String sale;
-    @JsonProperty(value = "date")
-    private String currentDate;
 }

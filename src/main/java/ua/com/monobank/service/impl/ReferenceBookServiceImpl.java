@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.com.monobank.exception.JournalNotFoundException;
+import ua.com.monobank.exception.MnemonicBadRequest;
 import ua.com.monobank.exception.MnemonicNotFoundException;
+import ua.com.monobank.exception.ReferenceBookNotFoundException;
 import ua.com.monobank.model.ReferenceBook;
 import ua.com.monobank.repository.ReferenceBookRepository;
 import ua.com.monobank.service.ReferenceBookService;
@@ -51,7 +53,12 @@ public class ReferenceBookServiceImpl implements ReferenceBookService {
 
     @Override
     public ReferenceBook findByMnemonic(String mnemonic) {
+
         ReferenceBook byMnemonic = bookRepository.findByMnemonic(mnemonic);
+        if (!mnemonic.equals(byMnemonic.getMnemonic())) {
+            throw new MnemonicBadRequest(
+                "bed request: " + mnemonic + " there is no such value in the database ");
+        }
         if (byMnemonic.getMnemonic() == null) {
             log.info("IN ReferenceBookServiceImpl METHOD findByMnemonic {} not found ", mnemonic);
             throw new MnemonicNotFoundException("mnemonic " + mnemonic + " not found");
@@ -59,6 +66,18 @@ public class ReferenceBookServiceImpl implements ReferenceBookService {
         log.info("IN ReferenceBookServiceImpl METHOD findByMnemonic {} found successfully ",
             byMnemonic);
         return byMnemonic;
+    }
+
+    @Override
+    public Integer findByCode(Integer code) {
+        Integer byCurrencyCode = bookRepository.findByCurrencyCode(code);
+        if (byCurrencyCode == null) {
+            log.info("code {} not found", code);
+            throw new ReferenceBookNotFoundException("code " + code + " not found");
+        }
+        log.info("IN ReferenceBookServiceImpl method findByCode, code {} found successfully ",
+            byCurrencyCode);
+        return byCurrencyCode;
     }
 
 }

@@ -1,18 +1,19 @@
 package ua.com.monobank.rest;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
+import org.dom4j.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,10 +52,9 @@ public class JournalController {
     @GetMapping(value = "{mnemonic}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Map<String, String>> getMnemonic(
         @PathVariable("mnemonic") String mnemonic) {
-        ReferenceBook book = bookService.findByMnemonic(mnemonic);
         Journal journal = journalService.findByMnemonic(mnemonic);
-        if (!book.getMnemonic().equals(mnemonic)) {
-            log.info("IN JournalController METHOD getMnemonic, {} bed request", mnemonic);
+        ReferenceBook byMnemonic = bookService.findByMnemonic(mnemonic);
+        if (!byMnemonic.getMnemonic().equals(mnemonic)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         if (journal == null) {
@@ -68,21 +68,23 @@ public class JournalController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-    @PostMapping("code/date")
+    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Journal> findByCodeAndDate(@RequestParam("code") Integer code,
         @RequestParam("date")
-        @DateTimeFormat(pattern = "dd.MM.yyyy") Date date) {
+        @DateTimeFormat(iso = ISO.DATE) LocalDate date) {
+
         Journal journal = journalService.getOne(code, date);
         if (journal == null) {
             log.info(
                 "IN JournalController METHOD findByCodeAndDate, record by code {} and date {} not found",
-                journal.getCurrencyCode(), journal.getDate());
+                code, date);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         log.info(
             "IN JournalController METHOD findByCodeAndDate, record by code {} and date {} not found",
-            journal.getCurrencyCode(), journal.getDate());
+            code, date);
         return new ResponseEntity<>(journal, HttpStatus.OK);
     }
+
 
 }

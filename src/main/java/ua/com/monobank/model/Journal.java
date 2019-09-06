@@ -1,15 +1,15 @@
 package ua.com.monobank.model;
 
+import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import lombok.Data;
 import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "journal")
@@ -21,7 +21,8 @@ public class Journal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "current")
-    private String date;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate date;
     @Column(name = "currency_code")
     private Integer currencyCode;
     @Column(name = "buy")

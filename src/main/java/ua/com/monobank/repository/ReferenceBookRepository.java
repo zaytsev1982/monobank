@@ -7,4 +7,6 @@ public interface ReferenceBookRepository extends JpaRepository<ReferenceBook, Lo
 
     ReferenceBook findByMnemonic(String mnemonic);
 
+    Integer findByCurrencyCode(Integer code);
+
 }

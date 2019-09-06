@@ -1,5 +1,6 @@
 package ua.com.monobank.converter;
 
+import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
@@ -20,11 +21,15 @@ public class JsonToJournal implements Converter<JournalJson, Journal> {
     @Override
     public Journal convert(JournalJson journalJson) {
         Journal journal = new Journal();
-        journal.setCurrencyCode(Integer.valueOf(journalJson.getCode()));
-        journal.setBuy(Double.valueOf(journalJson.getBuy()));
-        journal.setSale(Double.valueOf(journalJson.getSale()));
-        journal.setDate(journalJson.getCurrentDate());
-        return journalService.create(journal);
+        if (journalJson.getCode() != null && journalJson.getBuy() != null
+            && journalJson.getSale() != null) {
+            journal.setCurrencyCode(Integer.valueOf(journalJson.getCode()));
+            journal.setBuy(Double.valueOf(journalJson.getBuy()));
+            journal.setSale(Double.valueOf(journalJson.getSale()));
+            journal.setDate(LocalDate.now());
+            return journalService.create(journal);
+        }
+        return null;
 
     }
 

@@ -11,4 +11,6 @@ public interface ReferenceBookService {
 
     ReferenceBook findByMnemonic(String mnemonic);
 
+    Integer findByCode(Integer code);
+
 }

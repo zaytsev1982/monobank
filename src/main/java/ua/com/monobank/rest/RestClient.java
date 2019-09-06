@@ -3,6 +3,7 @@ package ua.com.monobank.rest;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.client.RestTemplate;
@@ -20,6 +21,7 @@ public class RestClient {
 
     private static final String URL = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?date=20190904&json";
     private static final String MONOBANK_CURRENCY_IN_CURRENT_DATE = "https://api.monobank.ua/bank/currency";
+    private static final String CURRENCY_IN_CURRENT_DATE = "http://bank-ua.com/export/exchange_rate_cash.json";
 
     private final RestTemplate restTemplate;
     private final ReferenceBookService referenceBookService;
@@ -48,14 +50,15 @@ public class RestClient {
         return referenceBookService.getAll();
     }
 
-//    @PostConstruct
-//    public List<Journal> addCourse() {
-//        JournalJson[] journalJsons = restTemplate
-//            .getForObject(MONOBANK_CURRENCY_IN_CURRENT_DATE, JournalJson[].class);
-//        for (JournalJson json : journalJsons) {
-//            Journal journal = jsonToJournal.convert(json);
-//        }
-//        return journalService.getAll();
-//    }
+    @PostConstruct
+    @Scheduled(cron = "0 00 17 ? * MON-FRI")
+    public List<Journal> addCourse() {
+        JournalJson[] journalJsons = restTemplate
+            .getForObject(MONOBANK_CURRENCY_IN_CURRENT_DATE, JournalJson[].class);
+        for (JournalJson json : journalJsons) {
+            Journal journal = jsonToJournal.convert(json);
+        }
+        return journalService.getAll();
+    }
 
 }
