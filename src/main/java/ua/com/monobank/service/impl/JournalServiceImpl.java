@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.com.monobank.exception.JournalNotFoundException;
-import ua.com.monobank.exception.MnemonicBadRequest;
 import ua.com.monobank.exception.MnemonicNotFoundException;
 import ua.com.monobank.model.Journal;
 import ua.com.monobank.model.ReferenceBook;
@@ -56,18 +55,18 @@ public class JournalServiceImpl implements JournalService {
     @Override
     public Journal findByMnemonic(String mnemonic) {
         ReferenceBook byMnemonic = bookRepository.findByMnemonic(mnemonic);
-        if (byMnemonic.getMnemonic() == null) {
+        if (!mnemonic.equalsIgnoreCase(byMnemonic.getMnemonic())) {
+            log.info("IN method findByMnemonic, mnemonic {} not found", mnemonic);
             throw new MnemonicNotFoundException("mnemonic " + mnemonic + " not found");
         }
-        if (!mnemonic.equals(byMnemonic.getMnemonic())) {
-            log.info("there is no such value in the database {}", mnemonic);
-            throw new MnemonicBadRequest(
-                "bed request: " + mnemonic + " there is no such value in the database ");
-        }
+
         List<Journal> journals = journalRepository.findAll();
         for (Journal journal : journals) {
             boolean equals = journal.getCurrencyCode().equals(byMnemonic.getCurrencyCode());
             if (equals) {
+                log.info(
+                    "IN JournalServiceImpl method findByMnemonic, mnemonic '{}' found successfully",
+                    mnemonic);
                 return journal;
             }
         }

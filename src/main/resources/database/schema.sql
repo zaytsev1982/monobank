@@ -1,3 +1,7 @@
+DROP TABLE reference_book;
+DROP TABLE journal;
+
+
 CREATE TABLE IF NOT EXISTS reference_book
 (
     id            BIGINT AUTO_INCREMENT,
@@ -17,19 +21,6 @@ CREATE TABLE IF NOT EXISTS journal
     sale          DOUBLE  NOT NULL,
     PRIMARY KEY (id)
 );
-CREATE TABLE IF NOT EXISTS usr
-(
-    id       BIGINT       NOT NULL AUTO_INCREMENT,
-    login    VARCHAR(50)  NOT NULL,
-    password VARCHAR(250) NOT NULL,
-    PRIMARY KEY (id)
-);
 
-CREATE TABLE IF NOT EXISTS user_roles
-(
-    user_id BIGINT      NOT NULL,
-    roles   VARCHAR(10) NOT NULL,
-    UNIQUE (user_id, roles)
-);
 
 

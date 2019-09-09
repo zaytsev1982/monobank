@@ -20,9 +20,9 @@ public class ReferenceBook {
     private Long id;
     @Column(name = "mnemonic", unique = true)
     private String mnemonic;
-    @Column(name = "currency_code")
+    @Column(name = "currency_code", unique = true)
     private Integer currencyCode;
-    @Column(name = "description")
+    @Column(name = "description", unique = true)
     private String description;
 
 
