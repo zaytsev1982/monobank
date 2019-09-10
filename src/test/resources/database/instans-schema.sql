@@ -1,7 +1,3 @@
-DELETE
-FROM reference_book;
-DELETE
-FROM journal;
 
 CREATE TABLE IF NOT EXISTS reference_book
 (

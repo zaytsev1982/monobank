@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.com.monobank.exception.JournalNotFoundException;
-import ua.com.monobank.exception.MnemonicBadRequest;
 import ua.com.monobank.exception.MnemonicNotFoundException;
 import ua.com.monobank.exception.ReferenceBookNotFoundException;
 import ua.com.monobank.model.ReferenceBook;
@@ -18,13 +17,8 @@ import ua.com.monobank.service.ReferenceBookService;
 @Transactional
 public class ReferenceBookServiceImpl implements ReferenceBookService {
 
-    private final ReferenceBookRepository bookRepository;
-
     @Autowired
-    public ReferenceBookServiceImpl(
-        ReferenceBookRepository bookRepository) {
-        this.bookRepository = bookRepository;
-    }
+    private ReferenceBookRepository bookRepository;
 
     @Override
     public ReferenceBook create(ReferenceBook referenceBook) {
@@ -53,19 +47,18 @@ public class ReferenceBookServiceImpl implements ReferenceBookService {
 
     @Override
     public ReferenceBook findByMnemonic(String mnemonic) {
+        ReferenceBook candidate = bookRepository.findAll().stream()
+            .filter(m -> m.getMnemonic().equalsIgnoreCase(mnemonic))
+            .findFirst().orElse(null);
 
-        ReferenceBook byMnemonic = bookRepository.findByMnemonic(mnemonic);
-        if (!mnemonic.equals(byMnemonic.getMnemonic())) {
-            throw new MnemonicBadRequest(
-                "bed request: " + mnemonic + " there is no such value in the database ");
-        }
-        if (byMnemonic.getMnemonic() == null) {
-            log.info("IN ReferenceBookServiceImpl METHOD findByMnemonic {} not found ", mnemonic);
-            throw new MnemonicNotFoundException("mnemonic " + mnemonic + " not found");
+
+        if (candidate == null) {
+            log.info("IN ReferenceBookServiceImpl METHOD findByMnemonic '{}' not found ", mnemonic);
+            throw new MnemonicNotFoundException("mnemonic '" + mnemonic + "' not found");
         }
         log.info("IN ReferenceBookServiceImpl METHOD findByMnemonic {} found successfully ",
-            byMnemonic);
-        return byMnemonic;
+            candidate.getMnemonic());
+        return candidate;
     }
 
     @Override

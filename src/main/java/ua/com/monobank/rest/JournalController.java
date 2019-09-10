@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
-import org.dom4j.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -28,15 +27,10 @@ import ua.com.monobank.transfer.JournalForm;
 @RequestMapping("/api/")
 public class JournalController {
 
-    private final JournalService journalService;
-    private final ReferenceBookService bookService;
-
     @Autowired
-    public JournalController(JournalService journalService,
-        ReferenceBookService bookService) {
-        this.journalService = journalService;
-        this.bookService = bookService;
-    }
+    private JournalService journalService;
+    @Autowired
+    private ReferenceBookService bookService;
 
     @GetMapping(value = "journal", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<List<Journal>> getAll() {
@@ -49,22 +43,27 @@ public class JournalController {
         return new ResponseEntity<>(journals, HttpStatus.OK);
     }
 
+
     @GetMapping(value = "{mnemonic}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Map<String, String>> getMnemonic(
         @PathVariable("mnemonic") String mnemonic) {
-        Journal journal = journalService.findByMnemonic(mnemonic);
         ReferenceBook byMnemonic = bookService.findByMnemonic(mnemonic);
-        if (!byMnemonic.getMnemonic().equals(mnemonic)) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        if (journal == null) {
+        Journal journal = journalService.findByMnemonic(mnemonic);
+
+
+        if (!byMnemonic.getMnemonic().equalsIgnoreCase(mnemonic) || journal == null) {
             log.info("IN JournalController METHOD getMnemonic, {} not found", mnemonic);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+
+
         JournalForm journalForm = JournalForm.from(journal);
+
         Map<String, String> map = new HashMap<>();
         map.put("buy", journalForm.getBuy());
         map.put("sale", journalForm.getSale());
+        log.info("IN JournalController METHOD getMnemonic,  mnemonic - '{}' return successfully {}",
+            mnemonic, map);
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 

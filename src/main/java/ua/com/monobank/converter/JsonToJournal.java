@@ -20,7 +20,9 @@ public class JsonToJournal implements Converter<JournalJson, Journal> {
 
     @Override
     public Journal convert(JournalJson journalJson) {
+
         Journal journal = new Journal();
+
         if (journalJson.getCode() != null && journalJson.getBuy() != null
             && journalJson.getSale() != null) {
             journal.setCurrencyCode(Integer.valueOf(journalJson.getCode()));

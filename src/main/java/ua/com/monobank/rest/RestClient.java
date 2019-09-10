@@ -5,10 +5,10 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.client.RestTemplate;
 import ua.com.monobank.converter.JsonToBook;
 import ua.com.monobank.converter.JsonToJournal;
+import ua.com.monobank.exception.ClientConnectException;
 import ua.com.monobank.model.Journal;
 import ua.com.monobank.model.ReferenceBook;
 import ua.com.monobank.service.JournalService;
@@ -41,9 +41,11 @@ public class RestClient {
     }
 
     @PostConstruct
-    @GetMapping("")
     private List<ReferenceBook> addBook() {
         BookJson[] list = restTemplate.getForObject(URL, BookJson[].class);
+        if (list.length == 0) {
+            throw new ClientConnectException("does not connect to server");
+        }
         for (BookJson bookJson : list) {
             ReferenceBook book = jsonToBook.convert(bookJson);
         }
@@ -55,6 +57,10 @@ public class RestClient {
     public List<Journal> addCourse() {
         JournalJson[] journalJsons = restTemplate
             .getForObject(MONOBANK_CURRENCY_IN_CURRENT_DATE, JournalJson[].class);
+        if (journalJsons.length == 0) {
+            throw new ClientConnectException("does not connect to server");
+        }
+
         for (JournalJson json : journalJsons) {
             Journal journal = jsonToJournal.convert(json);
         }
