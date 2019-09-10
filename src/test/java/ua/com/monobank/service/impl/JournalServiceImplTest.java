@@ -1,5 +1,6 @@
 package ua.com.monobank.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -22,16 +23,22 @@ class JournalServiceImplTest {
     private ReferenceBookRepository referenceBookRepository;
 
     @Test
-    void getAll() {
+    void shouldBeGetAll() {
         List<Journal> all = service.getAll();
         Assert.assertEquals(all.size(), 4);
     }
 
     @Test
-    void findByMnemonicTest() {
+    void shouldBeFindByMnemonicTest() {
         Integer currencyCode = 840;
         Journal byMnemonic = service.findByMnemonic("usd");
         Assert.assertNotNull(byMnemonic);
         Assert.assertEquals(byMnemonic.getCurrencyCode(), currencyCode);
+    }
+
+    @Test
+    void shouldBeGetOne() {
+        Journal serviceOne = service.getOne(840, LocalDate.now());
+        Assert.assertNotNull(serviceOne);
     }
 }
