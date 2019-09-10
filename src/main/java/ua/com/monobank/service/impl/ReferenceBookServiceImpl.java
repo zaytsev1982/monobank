@@ -17,13 +17,8 @@ import ua.com.monobank.service.ReferenceBookService;
 @Transactional
 public class ReferenceBookServiceImpl implements ReferenceBookService {
 
-    private final ReferenceBookRepository bookRepository;
-
     @Autowired
-    public ReferenceBookServiceImpl(
-        ReferenceBookRepository bookRepository) {
-        this.bookRepository = bookRepository;
-    }
+    private ReferenceBookRepository bookRepository;
 
     @Override
     public ReferenceBook create(ReferenceBook referenceBook) {
@@ -59,7 +54,7 @@ public class ReferenceBookServiceImpl implements ReferenceBookService {
 
         if (candidate == null) {
             log.info("IN ReferenceBookServiceImpl METHOD findByMnemonic '{}' not found ", mnemonic);
-            throw new MnemonicNotFoundException("mnemonic " + mnemonic + " not found");
+            throw new MnemonicNotFoundException("mnemonic '" + mnemonic + "' not found");
         }
         log.info("IN ReferenceBookServiceImpl METHOD findByMnemonic {} found successfully ",
             candidate.getMnemonic());

@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -28,15 +27,10 @@ import ua.com.monobank.transfer.JournalForm;
 @RequestMapping("/api/")
 public class JournalController {
 
-    private final JournalService journalService;
-    private final ReferenceBookService bookService;
-
     @Autowired
-    public JournalController(JournalService journalService,
-        ReferenceBookService bookService) {
-        this.journalService = journalService;
-        this.bookService = bookService;
-    }
+    private JournalService journalService;
+    @Autowired
+    private ReferenceBookService bookService;
 
     @GetMapping(value = "journal", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<List<Journal>> getAll() {
@@ -55,6 +49,7 @@ public class JournalController {
         @PathVariable("mnemonic") String mnemonic) {
         ReferenceBook byMnemonic = bookService.findByMnemonic(mnemonic);
         Journal journal = journalService.findByMnemonic(mnemonic);
+
 
         if (!byMnemonic.getMnemonic().equalsIgnoreCase(mnemonic) || journal == null) {
             log.info("IN JournalController METHOD getMnemonic, {} not found", mnemonic);
@@ -89,5 +84,6 @@ public class JournalController {
             code, date);
         return new ResponseEntity<>(journal, HttpStatus.OK);
     }
+
 
 }
