@@ -11,7 +11,7 @@ import ua.com.monobank.model.ReferenceBook;
 import ua.com.monobank.service.ReferenceBookService;
 
 
-class ReferenceBookServiceImplTestHead extends BasicTestClassHead {
+class ReferenceBookServiceIT extends BasicTestClassHead {
 
     @Autowired
     private ReferenceBookService bookService;
@@ -23,7 +23,7 @@ class ReferenceBookServiceImplTestHead extends BasicTestClassHead {
         ReferenceBook bookFromDataBase = bookService.getAll().stream()
             .filter(c -> c.getCurrencyCode().equals(777)).findFirst()
             .orElse(null);
-        assertNotNull(bookFromDataBase);
+        assertNotNull(null, bookFromDataBase);
         assertEquals(book.getCurrencyCode(), bookFromDataBase.getCurrencyCode());
         assertEquals(book.getMnemonic(), bookFromDataBase.getMnemonic());
     }
@@ -31,7 +31,7 @@ class ReferenceBookServiceImplTestHead extends BasicTestClassHead {
     @Test
     void shouldBeGetAll() {
         List<ReferenceBook> mayBeList = bookService.getAll();
-        assertNotNull(mayBeList);
+        assertNotNull(null, mayBeList);
         assertEquals(mayBeList.size(), 62);
     }
 
@@ -39,7 +39,7 @@ class ReferenceBookServiceImplTestHead extends BasicTestClassHead {
     void shouldBeFindByMnemonic() {
         String mnemonic = "EUR";
         ReferenceBook mayBeMnemonic = bookService.findByMnemonic(mnemonic);
-        assertNotNull(mayBeMnemonic);
+        assertNotNull(null, mayBeMnemonic);
         assertEquals(mayBeMnemonic.getMnemonic(), mnemonic);
 
     }

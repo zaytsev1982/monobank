@@ -1,5 +1,8 @@
 package ua.com.monobank.service.impl;
 
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.Assert;
@@ -10,7 +13,7 @@ import ua.com.monobank.model.Journal;
 import ua.com.monobank.service.JournalService;
 
 
-class JournalServiceImplTestHead extends BasicTestClassHead {
+class JournalServiceIT extends BasicTestClassHead {
 
     @Autowired
     private JournalService service;
@@ -18,20 +21,21 @@ class JournalServiceImplTestHead extends BasicTestClassHead {
     @Test
     void shouldBeGetAll() {
         List<Journal> all = service.getAll();
-        Assert.assertEquals(all.size(), 4);
+        assertNotNull(null, all);
+        assertEquals(all.size(), 4);
     }
 
     @Test
     void shouldBeFindByMnemonicTest() {
         Integer currencyCode = 840;
         Journal byMnemonic = service.findByMnemonic("usd");
-        Assert.assertNotNull(byMnemonic);
-        Assert.assertEquals(byMnemonic.getCurrencyCode(), currencyCode);
+        assertNotNull(null, byMnemonic);
+        assertEquals(byMnemonic.getCurrencyCode(), currencyCode);
     }
 
     @Test
     void shouldBeGetOne() {
         Journal serviceOne = service.getOne(840, LocalDate.now());
-        Assert.assertNotNull(serviceOne);
+        assertNotNull(null, serviceOne);
     }
 }

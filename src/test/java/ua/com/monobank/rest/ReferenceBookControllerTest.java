@@ -26,19 +26,7 @@ class ReferenceBookControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Test
-    void addBook() throws Exception {
 
-
-    }
-
-    @Test
-    void listBook() throws Exception {
-        this.mockMvc.perform(get("/api/reference-book"))
-            .andDo(print())
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
-    }
 
 
 }

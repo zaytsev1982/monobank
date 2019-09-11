@@ -1,3 +1,9 @@
+DELETE
+FROM currenciestest.reference_book;
+DELETE
+FROM currenciestest.journal;
+
+
 
 CREATE TABLE IF NOT EXISTS reference_book
 (
@@ -18,6 +24,9 @@ CREATE TABLE IF NOT EXISTS journal
     sale          DOUBLE  NOT NULL,
     PRIMARY KEY (id)
 );
-
+ALTER TABLE currenciestest.reference_book
+    AUTO_INCREMENT = 1;
+ALTER TABLE currenciestest.journal
+    AUTO_INCREMENT = 1;
 
 

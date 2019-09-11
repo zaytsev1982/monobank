@@ -39,9 +39,8 @@ public class ReferenceBookServiceImpl implements ReferenceBookService {
             log.info("IN ReferenceBookServiceImpl METHOD getAll, referenceBooks empty");
             throw new JournalNotFoundException("referenceBooks empty");
         }
-        for (ReferenceBook referenceBook : referenceBooks) {
-            log.info("IN ReferenceBookServiceImpl METHOD getAll {}", referenceBook);
-        }
+        referenceBooks.forEach(referenceBook -> log
+            .info("IN ReferenceBookServiceImpl METHOD getAll {} ", referenceBook));
         return referenceBooks;
     }
 
