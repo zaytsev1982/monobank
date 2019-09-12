@@ -42,4 +42,14 @@ public class CustomGlobalException extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorHandler, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(JournalNotFoundException.class)
+    public ResponseEntity<ErrorHandler> errorHandlerBook(JournalNotFoundException ex,
+        WebRequest request) {
+        ErrorHandler errorHandler = new ErrorHandler();
+        errorHandler.setLocalDateTime(LocalDateTime.now());
+        errorHandler.setMessage(ex.getMessage());
+        errorHandler.addDetails(request.getDescription(false));
+        return new ResponseEntity<>(errorHandler, HttpStatus.NOT_FOUND);
+    }
+
 }

@@ -80,7 +80,7 @@ public class JournalController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         log.info(
-            "IN JournalController METHOD findByCodeAndDate, record by code {} and date {} not found",
+            "IN JournalController METHOD findByCodeAndDate, record by code {} and date {} found successfully",
             code, date);
         return new ResponseEntity<>(journal, HttpStatus.OK);
     }

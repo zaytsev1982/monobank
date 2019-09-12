@@ -22,14 +22,19 @@ public class ReferenceBookControllerIT extends BasicTestControllerHead {
 
     @Test
     public void shouldBeGetAllReferences() throws Exception {
-        mockMvc.perform(get("/api/reference-book"))
+        String URL = "/api/reference-book";
+
+        mockMvc.perform(get(URL))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.*").isNotEmpty())
             .andExpect(jsonPath("$.*").isArray())
             .andExpect(status().isOk());
     }
 
+    @Test
+    public void shouldBeCreateReference() throws Exception {
 
+    }
 
 
 }

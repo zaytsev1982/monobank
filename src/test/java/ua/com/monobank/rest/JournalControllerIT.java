@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -32,10 +33,22 @@ class JournalControllerIT extends BasicTestControllerHead {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk())
             .andReturn();
+
+        mockMvc.perform(get("/api/{mnemonic}", mnemonic + 1))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(status().isNotFound())
+            .andReturn();
     }
 
     @Test
     void shouldBeFindByCodeAndDate() throws Exception {
+        mockMvc.perform(get("/api/")
+            .param("code", "840")
+            .param("date", String.valueOf(LocalDate.now())))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(status().isOk());
+
 
     }
+
 }
