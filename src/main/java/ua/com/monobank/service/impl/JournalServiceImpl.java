@@ -74,11 +74,9 @@ public class JournalServiceImpl implements JournalService {
     }
 
     @Override
-    public Journal getOne(Integer code, LocalDate date) {
-        Journal journal = getCode(code);
-
+    public Journal findByCodeAndDAte(Integer code, LocalDate date) {
         Journal byCurrencyCodeAndDate = journalRepository
-            .findByCurrencyCodeAndDate(journal.getCurrencyCode(), date);
+            .findByCurrencyCodeAndDate(code, date);
 
         if (byCurrencyCodeAndDate == null) {
             log.info("IN JournalServiceImpl METHOD getOne record by {} and {} not found ", code,
@@ -88,20 +86,7 @@ public class JournalServiceImpl implements JournalService {
         }
         log.info("IN JournalServiceImpl METHOD getOne record {} found successfully ",
             byCurrencyCodeAndDate);
-
         return byCurrencyCodeAndDate;
     }
-
-    @Override
-    public Journal getCode(Integer code) {
-        return journalRepository.findByCurrencyCode(code);
-    }
-
-    @Override
-    public List<Journal> getByDate(LocalDate localDate) {
-        return journalRepository.findAllByDate(localDate);
-    }
-
-
 
 }

@@ -72,13 +72,14 @@ public class JournalController {
         @RequestParam("date")
         @DateTimeFormat(iso = ISO.DATE) LocalDate date) {
 
-        Journal journal = journalService.getOne(code, date);
+        Journal journal = journalService.findByCodeAndDAte(code, date);
         if (journal == null) {
             log.info(
                 "IN JournalController METHOD findByCodeAndDate, record by code {} and date {} not found",
                 code, date);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+
         log.info(
             "IN JournalController METHOD findByCodeAndDate, record by code {} and date {} found successfully",
             code, date);

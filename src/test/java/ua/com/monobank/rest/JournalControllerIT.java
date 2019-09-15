@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -42,12 +43,21 @@ class JournalControllerIT extends BasicTestControllerHead {
 
     @Test
     void shouldBeFindByCodeAndDate() throws Exception {
+        String format = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String correctCode = "840";
+        String incorrectCode = "1234";
+//        correct data
         mockMvc.perform(get("/api/")
-            .param("code", "840")
-            .param("date", String.valueOf(LocalDate.now())))
+            .param("code", correctCode)
+            .param("date", format))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(status().isOk());
-
+//        incorrect data
+        mockMvc.perform(get("/api/")
+            .param("code", incorrectCode)
+            .param("date", format))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(status().isNotFound());
 
     }
 

@@ -24,7 +24,7 @@ public class JsonToJournal implements Converter<JournalJson, Journal> {
         Journal journal = new Journal();
 
         if (journalJson.getCode() != null && journalJson.getBuy() != null
-            && journalJson.getSale() != null) {
+            && journalJson.getSale() != null && journalJson.getCodeB().contains("980")) {
             journal.setCurrencyCode(Integer.valueOf(journalJson.getCode()));
             journal.setBuy(Double.valueOf(journalJson.getBuy()));
             journal.setSale(Double.valueOf(journalJson.getSale()));

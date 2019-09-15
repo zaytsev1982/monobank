@@ -12,9 +12,6 @@ public interface JournalService {
 
     Journal findByMnemonic(String mnemonic);
 
-    Journal getOne(Integer code, LocalDate date);
+    Journal findByCodeAndDAte(Integer code, LocalDate date);
 
-    Journal getCode(Integer code);
-
-    List<Journal> getByDate(LocalDate localDate);
 }

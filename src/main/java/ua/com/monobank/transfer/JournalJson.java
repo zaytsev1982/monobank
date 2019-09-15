@@ -12,6 +12,8 @@ public class JournalJson {
 
     @JsonProperty(value = "currencyCodeA")
     private String code;
+    @JsonProperty(value = "currencyCodeB")
+    private String codeB;
     @JsonProperty(value = "date")
     private String currentDate;
     @JsonProperty(value = "rateBuy")

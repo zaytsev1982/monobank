@@ -33,7 +33,7 @@ public class ReferenceBookController {
         }
         ReferenceBook book = referenceBookService.create(referenceBook);
         log.info("IN ReferenceBookController addBook {}", book);
-        return new ResponseEntity<>(book, HttpStatus.OK);
+        return new ResponseEntity<>(book, HttpStatus.CREATED);
     }
 
     @GetMapping(value = "reference-book", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

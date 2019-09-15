@@ -1,11 +1,10 @@
 package ua.com.monobank.service.impl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.time.LocalDate;
 import java.util.List;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ua.com.monobank.BasicTestClassHead;
@@ -21,8 +20,8 @@ class JournalServiceIT extends BasicTestClassHead {
     @Test
     void shouldBeGetAll() {
         List<Journal> all = service.getAll();
-        assertNotNull(null, all);
-        assertEquals(all.size(), 4);
+        assertNotNull(all);
+        assertEquals(all.size(), 3);
     }
 
     @Test
@@ -35,7 +34,7 @@ class JournalServiceIT extends BasicTestClassHead {
 
     @Test
     void shouldBeGetOne() {
-        Journal serviceOne = service.getOne(840, LocalDate.now());
+        Journal serviceOne = service.findByCodeAndDAte(840, LocalDate.now());
         assertNotNull(null, serviceOne);
     }
 }

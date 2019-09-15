@@ -23,7 +23,7 @@ class ReferenceBookServiceIT extends BasicTestClassHead {
         ReferenceBook bookFromDataBase = bookService.getAll().stream()
             .filter(c -> c.getCurrencyCode().equals(777)).findFirst()
             .orElse(null);
-        assertNotNull(null, bookFromDataBase);
+        assertNotNull(bookFromDataBase);
         assertEquals(book.getCurrencyCode(), bookFromDataBase.getCurrencyCode());
         assertEquals(book.getMnemonic(), bookFromDataBase.getMnemonic());
     }
@@ -49,7 +49,7 @@ class ReferenceBookServiceIT extends BasicTestClassHead {
         Integer code = 840;
         ReferenceBook byBook = bookService.getAll().stream()
             .filter(c -> c.getCurrencyCode().equals(code)).findFirst().orElse(null);
-
+        assertNotNull(byBook);
         assertEquals(byBook.getCurrencyCode(), code);
 
     }
