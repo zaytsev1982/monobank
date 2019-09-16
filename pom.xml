@@ -26,6 +26,7 @@
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>${lombok.version}</version>
+      <scope>provided</scope>
     </dependency>
 
 
@@ -83,8 +84,12 @@
           <goal>test</goal>
         </goals>
         <configuration>
-          <includes>**/*IT.java</includes>
-          <excludes>**/*Head.java</excludes>
+          <includes>
+            <include>**/*IT.java</include>
+          </includes>
+          <excludes>
+            <exclude>**/*Head.java</exclude>
+          </excludes>
         </configuration>
       </plugin>
     </plugins>
