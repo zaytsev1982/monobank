@@ -18,19 +18,3 @@ CREATE TABLE IF NOT EXISTS journal
     PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS usr
-(
-    id       BIGINT             NOT NULL AUTO_INCREMENT,
-    login    VARCHAR(50) UNIQUE NOT NULL,
-    password VARCHAR(250)       NOT NULL,
-    PRIMARY KEY (id)
-);
-
-CREATE TABLE IF NOT EXISTS user_roles
-(
-    user_id BIGINT      NOT NULL,
-    roles   VARCHAR(50) NOT NULL,
-    UNIQUE (user_id, roles),
-    FOREIGN KEY (user_id) REFERENCES usr (id)
-);
-

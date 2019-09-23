@@ -1,5 +1,6 @@
 package ua.com.monobank.rest;
 
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -7,19 +8,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ua.com.monobank.BasicTestControllerHead;
 
-class JournalControllerIT extends BasicTestControllerHead {
+public class JournalControllerIT extends BasicTestControllerHead {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    void shouldBeGetAllJournal() throws Exception {
+    public void shouldBeGetAllJournal() throws Exception {
         mockMvc.perform(get("/api/journal"))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.*").isNotEmpty())
@@ -28,7 +29,7 @@ class JournalControllerIT extends BasicTestControllerHead {
     }
 
     @Test
-    void shouldBeGetMnemonic() throws Exception {
+    public void shouldBeGetMnemonic() throws Exception {
         String mnemonic = "USD";
         mockMvc.perform(get("/api/{mnemonic}", mnemonic))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -42,7 +43,7 @@ class JournalControllerIT extends BasicTestControllerHead {
     }
 
     @Test
-    void shouldBeFindByCodeAndDate() throws Exception {
+    public void shouldBeFindByCodeAndDate() throws Exception {
         String format = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         String correctCode = "840";
         String incorrectCode = "1234";

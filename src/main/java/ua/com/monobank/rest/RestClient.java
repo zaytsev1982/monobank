@@ -3,6 +3,8 @@ package ua.com.monobank.rest;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -17,11 +19,13 @@ import ua.com.monobank.transfer.BookJson;
 import ua.com.monobank.transfer.JournalJson;
 
 @Component
+@PropertySource("classpath:/json/uri.properties")
 public class RestClient {
 
-    private static final String URL = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?date=20190904&json";
-    private static final String MONOBANK_CURRENCY_IN_CURRENT_DATE = "https://api.monobank.ua/bank/currency";
-    private static final String CURRENCY_IN_CURRENT_DATE = "http://bank-ua.com/export/exchange_rate_cash.json";
+    @Value("${spring.connect.url}")
+    private String reference;
+    @Value("${MONOBANK_CURRENCY_IN_CURRENT_DATE}")
+    private String exchangeRate;
 
     private final RestTemplate restTemplate;
     private final ReferenceBookService referenceBookService;
@@ -42,7 +46,9 @@ public class RestClient {
 
     @PostConstruct
     private List<ReferenceBook> addBook() {
-        BookJson[] list = restTemplate.getForObject(URL, BookJson[].class);
+
+
+        BookJson[] list = restTemplate.getForObject(reference, BookJson[].class);
         if (list.length == 0) {
             throw new ClientConnectException("does not connect to server");
         }
@@ -56,7 +62,7 @@ public class RestClient {
     @Scheduled(cron = "0 00 17 ? * MON-FRI")
     public List<Journal> addCourse() {
         JournalJson[] journalJsons = restTemplate
-            .getForObject(MONOBANK_CURRENCY_IN_CURRENT_DATE, JournalJson[].class);
+            .getForObject(exchangeRate, JournalJson[].class);
         if (journalJsons.length == 0) {
             throw new ClientConnectException("does not connect to server");
         }

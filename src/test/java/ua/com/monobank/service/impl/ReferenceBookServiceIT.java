@@ -4,20 +4,20 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ua.com.monobank.BasicTestClassHead;
 import ua.com.monobank.model.ReferenceBook;
 import ua.com.monobank.service.ReferenceBookService;
 
 
-class ReferenceBookServiceIT extends BasicTestClassHead {
+public class ReferenceBookServiceIT extends BasicTestClassHead {
 
     @Autowired
     private ReferenceBookService bookService;
 
     @Test
-    void shouldBeCreate() {
+   public void shouldBeCreate() {
         ReferenceBook book = getNewInstant();
         bookService.create(book);
         ReferenceBook bookFromDataBase = bookService.getAll().stream()
@@ -29,14 +29,14 @@ class ReferenceBookServiceIT extends BasicTestClassHead {
     }
 
     @Test
-    void shouldBeGetAll() {
+   public void shouldBeGetAll() {
         List<ReferenceBook> mayBeList = bookService.getAll();
         assertNotNull(null, mayBeList);
         assertEquals(mayBeList.size(), 62);
     }
 
     @Test
-    void shouldBeFindByMnemonic() {
+   public void shouldBeFindByMnemonic() {
         String mnemonic = "EUR";
         ReferenceBook mayBeMnemonic = bookService.findByMnemonic(mnemonic);
         assertNotNull(null, mayBeMnemonic);
@@ -45,7 +45,7 @@ class ReferenceBookServiceIT extends BasicTestClassHead {
     }
 
     @Test
-    void shouldBeFindByCode() {
+   public void shouldBeFindByCode() {
         Integer code = 840;
         ReferenceBook byBook = bookService.getAll().stream()
             .filter(c -> c.getCurrencyCode().equals(code)).findFirst().orElse(null);

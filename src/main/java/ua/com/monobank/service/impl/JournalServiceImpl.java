@@ -44,12 +44,16 @@ public class JournalServiceImpl implements JournalService {
 
     @Override
     public Journal create(Journal journal) {
-        if (journal == null) {
-            log.info("IN JournalServiceImpl METHOD create : Journal is empty ");
-            throw new JournalNotFoundException("Journal is empty");
+        Journal candidate = journalRepository
+            .findByCurrencyCodeAndDate(journal.getCurrencyCode(), LocalDate.now());
+
+        if (candidate == null) {
+            log.info("IN JournalServiceImpl METHOD create {}", journal);
+            return journalRepository.save(journal);
         }
-        log.info("IN JournalServiceImpl METHOD create {}", journal);
-        return journalRepository.save(journal);
+        log.info("IN JournalServiceImpl METHOD create : Journal is present ");
+        return candidate;
+
     }
 
     @Override
